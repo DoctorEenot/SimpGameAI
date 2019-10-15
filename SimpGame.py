@@ -10,9 +10,13 @@ class Rewards:
         
 
 
-
-size = [20,20]
-NOBSTACLES = 20
+x = int(input('X: '))
+y = int(input('Y: '))
+o = int(input('Obstacles: '))
+LR = float(input('LR: '))
+DF = float(input('DF: '))
+size = [x,y]
+NOBSTACLES = o
 forbidden = []
 
 for y in range(0,4):
@@ -58,13 +62,14 @@ def logic(agent):
 
 class Agent:
     def __init__(self,position,speed,graphic:GraphicObject):
+        global LR, DF
         self.prev_position = position
         self.position = position
         self.speed = speed
         self.graphic = graphic
         self.qmatrix = []
-        self.LR = 0.9
-        self.DF = 0.3
+        self.LR = LR
+        self.DF = DF
         self.moves = 0
 
     def move(self,movement:int):
@@ -134,8 +139,9 @@ def prep_scene():
     for obst in obstacles:
         scene.write_object(obst,obstacle_graphic)
 
-
+won = True
 def main():
+    global won
     alive = True
     while alive:        
         prep_scene()
@@ -143,13 +149,20 @@ def main():
         prediction = bot.get_value()
         bot.move(prediction)
         reward = logic(bot)
-        if reward == rewards.loose or reward == rewards.win:
+        if reward == rewards.loose :
             alive = False
+        elif reward == rewards.win:
+            alive = False
+            won = False
         bot.update_qtable(reward)
-        wnd.write(scene)
-        sleep(0.1)
+        #wnd.write(scene)
+        if won == False:
+            wnd.write(scene)
+            sleep(0.1)
 
 while True:
     main()
     bot.position = [0,0]
     bot.prev_position = bot.position
+    
+#sleep(5)
