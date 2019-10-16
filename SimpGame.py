@@ -29,7 +29,7 @@ while i != NOBSTACLES:
     pos = [random.randint(0,size[1]-1),random.randint(0,size[1]-1)]
     if pos in obstacles or pos in forbidden:
         continue
-    obstacles.append([random.randint(0,size[1]-1),random.randint(0,size[1]-1)])
+    obstacles.append(pos)
     i += 1
 
 del forbidden
@@ -155,10 +155,11 @@ def main():
             alive = False
             won = False
         bot.update_qtable(reward)
-        #wnd.write(scene)
-        if won == False:
-            wnd.write(scene)
-            sleep(0.1)
+        wnd.write(scene)
+        sleep(0.1)
+        #if won == False:
+            #wnd.write(scene)
+            #sleep(0.1)
 
 while True:
     main()
